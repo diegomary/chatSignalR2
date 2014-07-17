@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 
 namespace Chat.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         //public override Task OnConnected()

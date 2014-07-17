@@ -27,11 +27,14 @@ namespace Chat.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Chat()
         {
             ViewBag.Message = "Chat page.";
 
-            return View();
+            object UserName = User.Identity.Name;
+
+            return View(UserName);
         }
 
 
