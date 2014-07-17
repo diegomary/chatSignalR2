@@ -40,7 +40,7 @@ namespace Chat.Hubs
         //    return base.OnReconnected();
         //}
 
-        private readonly static ConnectionMapping<string> _connections =
+        public readonly static ConnectionMapping<string> _connections =
            new ConnectionMapping<string>();
 
 
@@ -57,9 +57,7 @@ namespace Chat.Hubs
         public override Task OnDisconnected()
         {
             string name = Context.User.Identity.Name;
-
             _connections.Remove(name, Context.ConnectionId);
-
             return base.OnDisconnected();
         }
 

@@ -7,8 +7,7 @@ namespace Chat.Hubs
 {
     public class ConnectionMapping<T>
     {
-        private readonly Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
+        private readonly Dictionary<T, HashSet<string>> _connections =new Dictionary<T, HashSet<string>>();
 
         public int Count
         {
@@ -16,6 +15,11 @@ namespace Chat.Hubs
             {
                 return _connections.Count;
             }
+        }
+
+        public List<T>  GetAllConnectedUserNames()
+        {
+            return _connections.Select(temp => temp.Key).ToList();
         }
 
         public void Add(T key, string connectionId)
