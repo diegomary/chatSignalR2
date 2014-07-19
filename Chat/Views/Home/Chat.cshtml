@@ -9,12 +9,26 @@
 </style>
 
 <div class="container">
-    <input type="text" id="message" />
-    <input type="button" id="sendmessage" value="Send" />
-    <input type="button" id="closeconn" value="Close Connection" />
-    <input type="hidden" id="displayname" />
-    <ul id="discussion"></ul>
+
+    <table>
+        <tr>
+            <td><input type="hidden" id="displayname" /></td>            
+            <td><input type="text" id="message" /></td>
+            <td><input type="button" id="sendmessage" value="Send" /></td>
+            <td><input type="button" id="closeconn" value="Close Connection" /></td>
+        </tr>
+    </table> 
+
+    <br />
+   
+    <div id="connectedusers">
+    </div>  
+    <br />
+<ul id="discussion"></ul>
 </div>
+
+   
+
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
@@ -54,7 +68,16 @@
                                 type: "GET",
                                 beforeSend: function () {  },
                                 success: function (result) {
-                                    alert(result);
+                                    var list = document.createElement('ul');
+                                    for (var i = 0; i < result.length; i++) {
+                                        // Create the list item:
+                                        var item = document.createElement('li');
+                                        // Set its contents:
+                                        item.appendChild(document.createTextNode(result[i]));
+                                        // Add it to the list:
+                                        list.appendChild(item);
+                                    }
+                                    $("#connectedusers").append(list);                                   
                                 }
                             });
                             $('#sendmessage').click(function () {
@@ -73,21 +96,9 @@
             });
             // Set initial focus to message input box.
             $('#message').focus();
-
-
-
             $("#closeconn").click(function () {
                 $.connection.hub.stop();
-            });
-
-
-
-
-
-
-
-
-            
+            });            
         });
         // This optional function html-encodes messages for display in the page.
         function htmlEncode(value) {
