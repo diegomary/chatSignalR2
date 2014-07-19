@@ -5,6 +5,15 @@ using System.Web;
 
 namespace Chat.Hubs
 {
+
+    public class UserChat
+    {
+        public string Name { get; set; }
+        public string ConnectionId { get; set; }
+    }
+
+
+
     public class ConnectionMapping<T>
     {
         private readonly Dictionary<T, HashSet<string>> _connections =new Dictionary<T, HashSet<string>>();
@@ -20,6 +29,16 @@ namespace Chat.Hubs
         public List<T>  GetAllConnectedUserNames()
         {
             return _connections.Select(temp => temp.Key).ToList();
+        }
+
+        public List<UserChat> GetAllConnectedUser()
+        {
+            List<UserChat> result = new List<UserChat>();
+            foreach (var temp in _connections)
+            {
+                result.Add(new UserChat{ Name= temp.Key.ToString(), ConnectionId =temp.Value.FirstOrDefault()});
+            }
+            return result;
         }
 
         public void Add(T key, string connectionId)

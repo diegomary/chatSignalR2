@@ -3,10 +3,13 @@
 }
 <h2 id="headerconn">Chat</h2>
 <style>
-    .noclose .ui-dialog-titlebar-close {
-        display: none;
-    }
+.noclose .ui-dialog-titlebar-close {display: none;}
+ul
+{
+    list-style-type: none;
+}
 </style>
+<script src="~/Scripts/angular.min.js"></script>
 <div class="container">
     <table>
         <tr>
@@ -16,10 +19,19 @@
             <td><input type="button" id="closeconn" value="Close Connection" /></td>
         </tr>
     </table>
-    <br />   
-    <div id="connectedusers">
-    </div>  
-    <br />
+    <br /> 
+  
+   <div id="connectedusers" data-ng-app="moduleApp129" data-ng-controller="UserController">
+    <ul>
+     <li ng-repeat=" user in users ">
+        <input type="text" style="width:180px" name="username" ng-model="user.Name" />
+        <input type="text" style="width:400px" name="connectionid" ng-model="user.ConnectionId" />
+        </li>
+        </ul>
+    </div>
+    <script src="~/Scripts/AngularCoreApp/appcore.js"></script>   
+    
+      <br />
 <ul id="discussion"></ul>
 </div>
 @section scripts {
@@ -31,29 +43,7 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
-        function connUsers()
-        {
-            $.ajax({
-                url: "/Home/GetAllConnectedUsers",
-                type: "GET",
-                cache: false,
-                beforeSend: function () { },
-                success: function (result) {
-                    var list = document.createElement('ul');
-                    for (var i = 0; i < result.length; i++) {
-                        // Create the list item:
-                        var item = document.createElement('li');
-                        // Set its contents:
-                        item.appendChild(document.createTextNode(result[i]));
-                        // Add it to the list:
-                        list.appendChild(item);
-                    }
-                    $("#connectedusers").html(list);
-                }
-            });
-        }
-        $(function () {
-            setInterval(function () { connUsers() }, 100);
+        $(function () {        
             // Open A Jquery Dialog to confirm the UserName.
             $("#dialog").dialog({
                 show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },

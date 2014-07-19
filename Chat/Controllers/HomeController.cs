@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Chat.Hubs;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Chat.Controllers
@@ -44,9 +46,14 @@ namespace Chat.Controllers
             return Json(hh.GetAllConnectedUserNames(), JsonRequestBehavior.AllowGet);
         }
 
-
-
-
+         [HttpGet]
+        public JsonResult GetAllConnectedUserNamesWithConnectionId()
+        {
+            //  var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            var hh = ChatHub._connections;
+            var tt = hh.GetAllConnectedUser();          
+            return  Json(tt, JsonRequestBehavior.AllowGet);
+        }       
 
 
     }
