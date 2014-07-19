@@ -40,6 +40,7 @@
             $.ajax({
                 url: "/Home/GetAllConnectedUsers",
                 type: "GET",
+                cache: false,
                 beforeSend: function () { },
                 success: function (result) {
                     var list = document.createElement('ul');
@@ -82,23 +83,7 @@
                         // Start the connection.
                         $.connection.hub.start().done(function () {
                             // This is the right entry point to invoke an Ajax call that resquests all connected users
-                            $.ajax({
-                                url: "/Home/GetAllConnectedUsers",
-                                type: "GET",
-                                beforeSend: function () {  },
-                                success: function (result) {
-                                    var list = document.createElement('ul');
-                                    for (var i = 0; i < result.length; i++) {
-                                        // Create the list item:
-                                        var item = document.createElement('li');
-                                        // Set its contents:
-                                        item.appendChild(document.createTextNode(result[i]));
-                                        // Add it to the list:
-                                        list.appendChild(item);
-                                    }
-                                    $("#connectedusers").append(list);                                   
-                                }
-                            });
+                            conn();
                             $('#sendmessage').click(function () {
                                 // Call the Send method on the hub.
                                 chat.server.sendmessage($('#displayname').val(), $('#message').val());
