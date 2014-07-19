@@ -7,9 +7,7 @@
         display: none;
     }
 </style>
-
 <div class="container">
-
     <table>
         <tr>
             <td><input type="hidden" id="displayname" /></td>            
@@ -17,10 +15,8 @@
             <td><input type="button" id="sendmessage" value="Send" /></td>
             <td><input type="button" id="closeconn" value="Close Connection" /></td>
         </tr>
-    </table> 
-
-    <br />
-   
+    </table>
+    <br />   
     <div id="connectedusers">
     </div>  
     <br />
@@ -35,7 +31,7 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
-        function conn()
+        function connUsers()
         {
             $.ajax({
                 url: "/Home/GetAllConnectedUsers",
@@ -56,9 +52,8 @@
                 }
             });
         }
-
         $(function () {
-            setInterval(function () { conn() }, 200);
+            setInterval(function () { connUsers() }, 100);
             // Open A Jquery Dialog to confirm the UserName.
             $("#dialog").dialog({
                 show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },
@@ -83,7 +78,7 @@
                         // Start the connection.
                         $.connection.hub.start().done(function () {
                             // This is the right entry point to invoke an Ajax call that resquests all connected users
-                            conn();
+                           // conn();
                             $('#sendmessage').click(function () {
                                 // Call the Send method on the hub.
                                 chat.server.sendmessage($('#displayname').val(), $('#message').val());
