@@ -8,7 +8,7 @@
 
    	setInterval( function()
     {		
-   	    Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data});
+   	    Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data });   	   
 	
    },200);
 }])
