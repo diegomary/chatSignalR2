@@ -15,7 +15,7 @@ angular.module('moduleApp129', [])
         }
         return this
     })
-        .controller('UserController', ['$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function ($scope, $interval, Users, Messaging, HtmlTools) {
+    .controller('UserController', ['$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function ($scope, $interval, Users, Messaging, HtmlTools) {
         angular.element(document).ready(function () {         
                 // Open A Jquery Dialog to confirm the UserName.
                 $("#dialog").dialog({
@@ -37,31 +37,39 @@ angular.module('moduleApp129', [])
                                     + '</strong>: ' + HtmlTools.htmlEncode(message) + '</li>');
                             };
                             // Start the connection.
-                            $.connection.hub.start().done(function () {                              
-                                $('#sendmessage').click(function () {
-                                    // Call the Send method on the hub.
-                                    Messaging.chat.server.sendmessage($('#displayname').val(), $('#message').val());
-                                    // Clear text box and reset focus for next comment.
-                                    $('#message').val('').focus();
-                                });
-                            });
+                            $.connection.hub.start().done(function () {       });
                             $('#displayname').val($('#username').val());
                             $('#headerconn').text($('#username').val() + ":   connected!");
                             $(this).dialog('close');
                         },
-                        "Cancel": function () { $(this).dialog('close'); }
+                        "Cancel": function () {
+                            $(this).dialog('close');
+                            location.href = 'Index';
+                        }
                     }
                 });
                 // Set initial focus to message input box.
                 $('#message').focus();
                 $("#closeconn").click(function () {                 
                     $.connection.hub.stop();
+                    location.href = 'Index';
                 });
         });
 	    $scope.users = [];
-   	    $interval(function () { Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data; }); }, 1000);
-   	    $scope.sendPrivateMessage = function (ConnectionId) {   	   
-   	    Messaging.chat.server.sendPrivateMessageToUser($('#displayname').val(), $('#message').val(), ConnectionId).
+	    $interval(function () {
+	        $('#connectedusers').css('background-color', 'red');	     
+	        Users.getUsers().
+                then(function (dataResponse) { $scope.users = dataResponse.data; }).
+                then(function () { $('#connectedusers').css('background-color', 'green'); });
+	    }, 1000, 0, true);
+   	    $scope.sendGlobalMessage = function () {
+   	        // Call the Send method on the hub.
+   	        Messaging.chat.server.sendmessage($('#displayname').val(), $('#message').val());
+   	        // Clear text box and reset focus for next comment.
+   	        $('#message').val('').focus();
+   	    }
+   	    $scope.sendPrivateMessage = function (ConnectionId,userName) {
+   	        Messaging.chat.server.sendPrivateMessageToUser(userName, $('#message').val(), ConnectionId).
         then(function (response) { alert(response); });   	       
    	}
 }])

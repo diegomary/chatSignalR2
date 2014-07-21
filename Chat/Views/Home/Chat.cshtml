@@ -10,22 +10,22 @@ ul
 }
 </style>
 <script src="~/Scripts/angular.min.js"></script>
-<div id="connectedusers" data-ng-app="moduleApp129" data-ng-controller="UserController" class="container">
+<div id="header" data-ng-app="moduleApp129" data-ng-controller="UserController" class="container">
     <table>
         <tr>
             <td><input type="hidden" id="displayname" /></td>
             <td><input type="text" id="message" /></td>
-            <td><input type="button" id="sendmessage" value="Send" /></td>
+            <td><input data-ng-click="sendGlobalMessage()" type="button" id="sendmessage" value="Send" /></td>
             <td><input type="button" id="closeconn" value="Close Connection" /></td>
         </tr>
     </table>
     <br />
-    <div>
+    <div id="connectedusers">
         <ul>
             <li ng-repeat=" user in users ">
                 <input type="text" style="width:180px" name="username" ng-model="user.Name" />
                 <input type="text" style="width:400px" name="connectionid" ng-model="user.ConnectionId" />
-                <button data-ng-click="sendPrivateMessage(user.ConnectionId)">Send Private MSG</button>
+                <button data-ng-click="sendPrivateMessage(user.ConnectionId,user.Name)">Send Private MSG</button>
             </li>
         </ul>
     </div>

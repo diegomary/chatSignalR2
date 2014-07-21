@@ -86,7 +86,7 @@ namespace Chat.Hubs
         {
             // Call the addNewMessageToPage method to update clients.
             Clients.Client(connectionId).addNewMessageToPage(name, message);
-            return ("Message sent to" + name);
+            return ("Message sent to " + name);
         }
 
 
