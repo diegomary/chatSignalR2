@@ -1,12 +1,13 @@
 ﻿// Angularr Modul that wraps SignalR2
-angular.module('moduleApp129', [])
+angular.module('moduleApp129', [])    
     .factory('Users', function ($http) {
-        this.getUsers = function () { return $http.get('/Home/GetAllConnectedUserNamesWithConnectionId', { cache: false }); };
-        return this;
+        return {
+                getUsers: function () { return $http.get('/Home/GetAllConnectedUserNamesWithConnectionId', { cache: false }); }
+                // Other functions for the factory to follow
+               }       
     })
-    .factory('Messaging', function () {
+    .service('Messaging', function () {
         this.chat = $.connection.chatHub;
-        return this;
     })
     .factory('HtmlTools', function () {
         this.htmlEncode = function (value) {
@@ -16,7 +17,7 @@ angular.module('moduleApp129', [])
         return this
     })
     .controller('UserController', ['$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function ($scope, $interval, Users, Messaging, HtmlTools) {
-        angular.element(document).ready(function () {         
+        angular.element(document).ready(function () {          
                 // Open A Jquery Dialog to confirm the UserName.
                 $("#dialog").dialog({
                     show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },
