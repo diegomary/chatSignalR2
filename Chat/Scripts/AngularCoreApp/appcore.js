@@ -1,21 +1,20 @@
 ﻿angular.module('moduleApp129', [])
     .factory('Users', function ($http) {
         this.getUsers = function () { return $http.get('/Home/GetAllConnectedUserNamesWithConnectionId', { cache: false }); };
+
+
+
         return this;
     })
-    .controller('UserController', ['$scope', 'Users', function ($scope, Users) {      
+    .controller('UserController', ['$scope', '$interval', 'Users', function ($scope,$interval, Users) {
 	$scope.users = [];
+   	$interval(function () { Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data; }); }, 1000);
 
-   	setInterval( function()
-    {		
-   	    Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data });   	   
-	
-   	}, 1000);
 
    	$scope.sendPrivateMessage = function (ConnectionId) {
    	    var chat = $.connection.chatHub;
    	    chat.server.sendPrivateMessageToUser($('#displayname').val(), $('#message').val(), ConnectionId);
-   	    alert(ConnectionId);        
+   	       
    	}
 
 
