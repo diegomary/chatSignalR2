@@ -10,7 +10,15 @@
     {		
    	    Users.getUsers().then(function (dataResponse) { $scope.users = dataResponse.data });   	   
 	
-   },200);
+   	}, 1000);
+
+   	$scope.sendPrivateMessage = function (ConnectionId) {
+   	    var chat = $.connection.chatHub;
+   	    chat.server.sendPrivateMessageToUser($('#displayname').val(), $('#message').val(), ConnectionId);
+   	    alert(ConnectionId);        
+   	}
+
+
 }])
     
 

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 
+
+// http://www.asp.net/signalr/overview/signalr-20/hubs-api/hubs-api-guide-server#multiplehubs
+
 namespace Chat.Hubs
 {
     [Authorize]
@@ -41,7 +44,7 @@ namespace Chat.Hubs
         //}
 
         public readonly static ConnectionMapping<string> _connections =
-           new ConnectionMapping<string>();
+        new ConnectionMapping<string>();
 
 
 
@@ -77,5 +80,14 @@ namespace Chat.Hubs
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);
         }
+
+        // Remember Camel Casing from javascript to C#
+        public void SendPrivateMessageToUser(string name, string message, string connectionId)
+        {
+            // Call the addNewMessageToPage method to update clients.
+            Clients.Client(connectionId).addNewMessageToPage(name, message);         
+        }
+
+
     }
 }

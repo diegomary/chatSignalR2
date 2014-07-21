@@ -26,6 +26,7 @@ ul
      <li ng-repeat=" user in users ">
         <input type="text" style="width:180px" name="username" ng-model="user.Name" />
         <input type="text" style="width:400px" name="connectionid" ng-model="user.ConnectionId" />
+        <button data-ng-click="sendPrivateMessage(user.ConnectionId)">Send Private MSG</button>
         </li>
         </ul>
     </div>
@@ -43,6 +44,8 @@ ul
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
+        // Reference the auto-generated proxy for the hub.
+        var chat = $.connection.chatHub;   
         $(function () {        
             // Open A Jquery Dialog to confirm the UserName.
             $("#dialog").dialog({
@@ -57,8 +60,7 @@ ul
                 closeOnEscape: false,
                 buttons: {
                     "Confirm User Name": function () {
-                        // Reference the auto-generated proxy for the hub.
-                        var chat = $.connection.chatHub;
+                       
                         // Create a function that the hub can call back to display messages.
                         chat.client.addNewMessageToPage = function (name, message) {
                             // Add the message to the page.
