@@ -82,10 +82,11 @@ namespace Chat.Hubs
         }
 
         // Remember Camel Casing from javascript to C#
-        public void SendPrivateMessageToUser(string name, string message, string connectionId)
+        public string SendPrivateMessageToUser(string name, string message, string connectionId)
         {
             // Call the addNewMessageToPage method to update clients.
-            Clients.Client(connectionId).addNewMessageToPage(name, message);         
+            Clients.Client(connectionId).addNewMessageToPage(name, message);
+            return ("Message sent to" + name);
         }
 
 
