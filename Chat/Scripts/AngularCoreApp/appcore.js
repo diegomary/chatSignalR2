@@ -1,7 +1,8 @@
 ﻿// Angularr Modul that wraps SignalR2
 angular.module('moduleApp129', [])    
+    .value('WelcomeMsg', 'Hello This is the chat System version 1.0')
     .factory('Users', function ($http) {
-        return {
+        return { //Revealing Module Pattern
                 getUsers: function () { return $http.get('/Home/GetAllConnectedUserNamesWithConnectionId', { cache: false }); }
                 // Other functions for the factory to follow
                }       
@@ -16,8 +17,9 @@ angular.module('moduleApp129', [])
         }
         return this
     })
-    .controller('UserController', ['$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function ($scope, $interval, Users, Messaging, HtmlTools) {
-        angular.element(document).ready(function () {          
+    .controller('UserController', ['WelcomeMsg', '$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function (WelcomeMsg, $scope, $interval, Users, Messaging, HtmlTools) {
+        angular.element(document).ready(function () {
+                alert(WelcomeMsg);
                 // Open A Jquery Dialog to confirm the UserName.
                 $("#dialog").dialog({
                     show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },
@@ -61,7 +63,7 @@ angular.module('moduleApp129', [])
 	        $('#connectedusers').css('background-color', 'red');	     
 	        Users.getUsers().
                 then(function (dataResponse) { $scope.users = dataResponse.data; }).
-                then(function () { $('#connectedusers').css('background-color', 'green'); });
+                then(function () { $('#connectedusers').css('background-color', 'green');});
 	    }, 1000, 0, true);
    	    $scope.sendGlobalMessage = function () {
    	        // Call the Send method on the hub.
