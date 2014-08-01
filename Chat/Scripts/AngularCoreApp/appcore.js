@@ -69,7 +69,7 @@ angular.module('moduleApp129', [])
 	        Users.getUsers().
                 then(function (dataResponse) { $scope.users = dataResponse.data; }).
                 then(function () { $('#connectedusers').css('background-color', 'green');});
-	    }, 500, 0, true);
+	    }, 3000, 0, true);
    	    $scope.sendGlobalMessage = function () {
    	        // Call the Send method on the hub.
    	        Messaging.chat.server.sendmessage($('#displayname').val(), $('#message').val());
