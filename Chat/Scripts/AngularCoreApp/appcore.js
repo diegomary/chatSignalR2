@@ -80,6 +80,7 @@ angular.module('moduleApp129', [])
    	        Messaging.chat.server.sendPrivateMessageToUser($.connection.hub.qs.username, $('#message').val(), ConnectionId).
         then(function (response) {
             //alert(response);
+            $('#message').val('').focus();
         });
    	}
 }])

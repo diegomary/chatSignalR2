@@ -5,25 +5,34 @@
 <style>
 .noclose .ui-dialog-titlebar-close {display: none;}
 ul
-{
+{ padding: 0;
     list-style-type: none;
+}
+
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
 }
 </style>
 <script src="~/Scripts/angular.min.js"></script>
 <div   data-ng-app="moduleApp129" data-ng-controller="UserController" class="container">
-    <table>
-        <tr>
-            <td><input type="hidden" id="displayname" /></td>
-            <td><input type="text" id="message" /></td>
-            <td><input data-ng-click="sendGlobalMessage()" type="button" id="sendmessage" value="Send" /></td>
-            <td><input type="button" id="closeconn" value="Close Connection" /></td>
+    <input type="hidden" id="displayname" />
+     <table>
+        <tr>            
+            <td>
+                <textarea rows="5" cols="50" id="message"></textarea>
+            </td>
+            <td style="vertical-align:top"><input data-ng-click="sendGlobalMessage()" type="button" id="sendmessage" value="Send" /></td>
+            <td style="vertical-align:top">&nbsp;<input type="button" id="closeconn" value="Close Connection" /></td>
         </tr>
     </table>
     <br />
     <table style="width:1200px;">
-        <tr>
+         <tr>
             <td style="width:450px">
-                <div id="talks" style="margin: 0 auto;overflow: auto;width:450px;height:600px;border-style:solid;border-radius:20px">
+                <div id="talks" class="wordwrap" style="padding:10px;margin:auto;overflow: auto;width:450px;height:600px;border-style:solid;border-radius:20px">
                     <ul id="discussion"></ul>
                 </div>
             </td>

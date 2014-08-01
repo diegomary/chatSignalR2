@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 
-
 // http://www.asp.net/signalr/overview/signalr-20/hubs-api/hubs-api-guide-server#multiplehubs
 
 namespace Chat.Hubs
@@ -42,8 +41,7 @@ namespace Chat.Hubs
         }
 
         public void Sendmessage(string name, string message)
-        {
-            
+        {            
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);
         }
@@ -51,11 +49,21 @@ namespace Chat.Hubs
         // Remember Camel Casing from javascript to C#
         public string SendPrivateMessageToUser(string name, string message, string connectionId)
         {
-            // Call the addNewMessageToPage method to update clients.
-            Clients.Client(connectionId).addNewMessageToPage(name, message);
-            return ("Message sent to " + name);
+            if (!connectionId.Equals(Context.ConnectionId))
+            { 
+                // when a private message is sent there must be sent also to the user who sends it 
+                Clients.Client(Context.ConnectionId).addNewMessageToPage(name, message);
+                // Then it is sent to the intended recipient
+                Clients.Client(connectionId).addNewMessageToPage(name, message);
+                return ("Message sent to " + name);
+            }
+            else
+            {
+                // this is the case the user is sending to him/herself
+                Clients.Client(connectionId).addNewMessageToPage(name, message);
+                return ("Message sent to " + name);
+
+            }
         }
-
-
     }
 }
