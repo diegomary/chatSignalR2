@@ -19,7 +19,7 @@ angular.module('moduleApp129', [])
     })
     .controller('UserController', ['WelcomeMsg', '$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function (WelcomeMsg, $scope, $interval, Users, Messaging, HtmlTools) {
         angular.element(document).ready(function () {
-                alert(WelcomeMsg);
+                //alert(WelcomeMsg);
                 // Open A Jquery Dialog to confirm the UserName.
                 $("#dialog").dialog({
                     show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },
@@ -38,16 +38,21 @@ angular.module('moduleApp129', [])
                                 // Add the message to the page.
                                 $('#discussion').append('<li><strong>' + HtmlTools.htmlEncode(name)
                                     + '</strong>: ' + HtmlTools.htmlEncode(message) + '</li>');
+                                $('#talks').animate({ scrollTop: $('#talks').prop("scrollHeight") }, 500);
+
                             };
                             // Start the connection.
-                            $.connection.hub.start().done(function () {       });
+                            var userName = $('#username').val()
+                            // prior to starting the connection we can add a querystring with the username using the    .qs method
+                            $.connection.hub.qs = { 'username': userName };
+                            $.connection.hub.start().done(function () { });                           
                             $('#displayname').val($('#username').val());
                             $('#headerconn').text($('#username').val() + ":   connected!");
                             $(this).dialog('close');
                         },
                         "Cancel": function () {
                             $(this).dialog('close');
-                            location.href = 'Index';
+                            location.href = '/home/chat';
                         }
                     }
                 });
@@ -55,7 +60,7 @@ angular.module('moduleApp129', [])
                 $('#message').focus();
                 $("#closeconn").click(function () {                 
                     $.connection.hub.stop();
-                    location.href = 'Index';
+                    location.href = '/home/chat';
                 });
         });
 	    $scope.users = [];
@@ -64,7 +69,7 @@ angular.module('moduleApp129', [])
 	        Users.getUsers().
                 then(function (dataResponse) { $scope.users = dataResponse.data; }).
                 then(function () { $('#connectedusers').css('background-color', 'green');});
-	    }, 1000, 0, true);
+	    }, 500, 0, true);
    	    $scope.sendGlobalMessage = function () {
    	        // Call the Send method on the hub.
    	        Messaging.chat.server.sendmessage($('#displayname').val(), $('#message').val());
@@ -72,8 +77,10 @@ angular.module('moduleApp129', [])
    	        $('#message').val('').focus();
    	    }
    	    $scope.sendPrivateMessage = function (ConnectionId,userName) {
-   	        Messaging.chat.server.sendPrivateMessageToUser(userName, $('#message').val(), ConnectionId).
-        then(function (response) { alert(response); });   	       
+   	        Messaging.chat.server.sendPrivateMessageToUser($.connection.hub.qs.username, $('#message').val(), ConnectionId).
+        then(function (response) {
+            //alert(response);
+        });
    	}
 }])
     

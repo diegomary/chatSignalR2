@@ -14,7 +14,7 @@ namespace Chat.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return View("Chat");
         }
 
         public ActionResult About()
@@ -26,10 +26,10 @@ namespace Chat.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-            return View();
+            return View("Chat");
         }
 
-        [Authorize]
+     
         public ActionResult Chat()
         {
             ViewBag.Message = "Chat page.";

@@ -5,14 +5,11 @@ using System.Web;
 
 namespace Chat.Hubs
 {
-
     public class UserChat
     {
         public string Name { get; set; }
         public string ConnectionId { get; set; }
     }
-
-
 
     public class ConnectionMapping<T>
     {
