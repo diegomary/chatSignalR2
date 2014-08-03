@@ -33,7 +33,14 @@ angular.module('moduleApp129', [])
             $.connection.hub.qs = { 'username': userName };
             $.connection.hub.start().done(function () { });
             $('#displayname').val($('#username').val());
-            $('#headerconn').text($('#username').val() + ":   connected!");        
+            $('#headerconn').html($('#username').val() + ":   Connected!  " + '<input type="button" id="closeconn" value="Close Connection" />');
+            $("#closeconn").click(function () {               
+                $.connection.hub.stop();
+                // we leave some time to disconnet and then we reload the page. The problem was with mozilla
+                $interval(function () {
+                    location.href = '/home/chat';                   
+                }, 500, 1, true);              
+            });
         }
         angular.element(document).ready(function () {
                  //alert(WelcomeMsg);
@@ -69,10 +76,7 @@ angular.module('moduleApp129', [])
 
                 // Set initial focus to message input box.
                 $('#message').focus();
-                $("#closeconn").click(function () {                 
-                    $.connection.hub.stop();
-                    location.href = '/home/chat';
-                });
+                
         });
 	    $scope.users = [];
 	    $interval(function () {
@@ -81,7 +85,7 @@ angular.module('moduleApp129', [])
                 then(function (dataResponse) { $scope.users = dataResponse.data; }).
                 then(function () {
                     $('#connectedusers').css('background-color', 'green');                
-                    $("#firstli").text("Number of Connected users: " + $scope.users.length)
+                    $("#firstli").text("Number of connected users: " + $scope.users.length)
                 });
 	    }, 3000, 0, true);
    	    $scope.sendGlobalMessage = function () {

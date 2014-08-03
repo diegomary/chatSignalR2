@@ -79,12 +79,12 @@ namespace Chat.Hubs
 
                 lock (connections)
                 {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
+                    //connections.Remove(connectionId);
+                    connections.Clear();
+                    //if (connections.Count == 0)
+                    //{
                         _connections.Remove(key);
-                    }
+                   // }
                 }
             }
         }

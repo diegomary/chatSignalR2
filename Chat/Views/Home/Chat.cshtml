@@ -35,10 +35,10 @@
 
 
 <body style="font-style:italic;font-family:Verdana;">
-    <div style="padding:5px; background-color:pink; border-style:hidden;border-radius:20px;width:900px;height:600px; margin:0 auto">
+    <div data-ng-app="moduleApp129" data-ng-controller="UserController" style="padding:5px; background-color:pink; border-style:hidden;border-radius:20px;width:900px;height:600px; margin:0 auto">
 
-        <h2 id="headerconn">Chat</h2>
-        <div data-ng-app="moduleApp129" data-ng-controller="UserController" class="container">
+        <h2 id="headerconn">Chat </h2>
+        <div class="container">
             <input type="hidden" id="displayname" />
             <table>
                 <tr>
@@ -46,7 +46,7 @@
                         <textarea rows="5" style="background-color:yellow;color:green; width:466px;border-style:hidden;border-radius:20px;padding:15px" id="message"></textarea>
                     </td>
                     <td style="vertical-align:top"><input data-ng-click="sendGlobalMessage()" type="button" id="sendmessage" value="Send" /></td>
-                    <td style="vertical-align:top">&nbsp;<input type="button" id="closeconn" value="Close Connection" /></td>
+                    <td style="vertical-align:top">&nbsp;</td>
                 </tr>
             </table>
             <br />
@@ -59,9 +59,10 @@
                     </td>
                     <td style="vertical-align:top;width:450px">
                         <div id="connectedusers">
-                            <ul><li id="firstli" style="color:white;font-style:italic;font-weight:bold;font-family:Verdana;" >Number of Connected users:</li>
+                            <ul>
+                                <li id="firstli" style="color:white;font-style:italic;font-weight:bold;font-family:Verdana;">Number of Connected users:</li>
                                 <li><span>&nbsp;</span></li>
-                            <li ng-repeat=" user in users ">
+                                <li ng-repeat=" user in users ">
                                     <input type="text" style="width:180px" name="username" ng-model="user.Name" />
                                     <input type="text" style="visibility:hidden;width:100px" name="connectionid" ng-model="user.ConnectionId" />
                                     <button data-ng-click="sendPrivateMessage(user.ConnectionId,user.Name)">Send Private MSG</button>
