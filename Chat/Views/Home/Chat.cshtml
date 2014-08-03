@@ -59,8 +59,9 @@
                     </td>
                     <td style="vertical-align:top;width:450px">
                         <div id="connectedusers">
-                            <ul>
-                                <li ng-repeat=" user in users ">
+                            <ul><li id="firstli" style="color:white;font-style:italic;font-weight:bold;font-family:Verdana;" >Number of Connected users:</li>
+                                <li><span>&nbsp;</span></li>
+                            <li ng-repeat=" user in users ">
                                     <input type="text" style="width:180px" name="username" ng-model="user.Name" />
                                     <input type="text" style="visibility:hidden;width:100px" name="connectionid" ng-model="user.ConnectionId" />
                                     <button data-ng-click="sendPrivateMessage(user.ConnectionId,user.Name)">Send Private MSG</button>

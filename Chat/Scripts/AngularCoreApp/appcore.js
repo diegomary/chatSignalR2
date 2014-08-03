@@ -18,13 +18,35 @@ angular.module('moduleApp129', [])
         return this
     })
     .controller('UserController', ['WelcomeMsg', '$scope', '$interval', 'Users', 'Messaging', 'HtmlTools', function (WelcomeMsg, $scope, $interval, Users, Messaging, HtmlTools) {
+        function confirmUserName() {
+            // Create a function that the hub can call back to display messages.
+            Messaging.chat.client.addNewMessageToPage = function (name, message) {
+                // Add the message to the page.
+                $('#discussion').append('<li><strong>' + HtmlTools.htmlEncode(name)
+                    + '</strong>: ' + HtmlTools.htmlEncode(message) + '</li>');
+                $('#talks').animate({ scrollTop: $('#talks').prop("scrollHeight") }, 500);
+
+            };
+            // Start the connection.
+            var userName = $('#username').val()
+            // prior to starting the connection we can add a querystring with the username using the    .qs method
+            $.connection.hub.qs = { 'username': userName };
+            $.connection.hub.start().done(function () { });
+            $('#displayname').val($('#username').val());
+            $('#headerconn').text($('#username').val() + ":   connected!");        
+        }
         angular.element(document).ready(function () {
-                //alert(WelcomeMsg);
-                // Open A Jquery Dialog to confirm the UserName.
+                 //alert(WelcomeMsg);
+            // Open A Jquery Dialog to confirm the UserName.
+            $('#message').keydown(function (e) {                      
+                if (e.keyCode == $.ui.keyCode.ENTER) {                  
+                    $scope.sendGlobalMessage();
+                }
+            });
                 $("#dialog").dialog({
                     show: { effect: 'slide', complete: function () { $(this).find("#username").focus(); } },
                     open: function (event, ui) { },
-                    close: function (event, ui) { $('#message').focus(); },
+                    close: function (event, ui) { $('#message').focus(); },                   
                     autoOpen: true,
                     height: 200,
                     width: 600,
@@ -32,30 +54,19 @@ angular.module('moduleApp129', [])
                     modal: true,
                     closeOnEscape: false,
                     buttons: {
-                        "Confirm User Name": function () {
-                            // Create a function that the hub can call back to display messages.
-                            Messaging.chat.client.addNewMessageToPage = function (name, message) {
-                                // Add the message to the page.
-                                $('#discussion').append('<li><strong>' + HtmlTools.htmlEncode(name)
-                                    + '</strong>: ' + HtmlTools.htmlEncode(message) + '</li>');
-                                $('#talks').animate({ scrollTop: $('#talks').prop("scrollHeight") }, 500);
-
-                            };
-                            // Start the connection.
-                            var userName = $('#username').val()
-                            // prior to starting the connection we can add a querystring with the username using the    .qs method
-                            $.connection.hub.qs = { 'username': userName };
-                            $.connection.hub.start().done(function () { });                           
-                            $('#displayname').val($('#username').val());
-                            $('#headerconn').text($('#username').val() + ":   connected!");
-                            $(this).dialog('close');
-                        },
+                        "Confirm User Name": function () { $(this).dialog('close'); confirmUserName(); },
                         "Cancel": function () {
                             $(this).dialog('close');
                             location.href = '/home/chat';
                         }
                     }
-                });
+                }).
+                  keydown(function (e) {                      
+                        if (e.keyCode == $.ui.keyCode.ENTER) {
+                        $(this).dialog('close'); confirmUserName();
+                        }
+                    });
+
                 // Set initial focus to message input box.
                 $('#message').focus();
                 $("#closeconn").click(function () {                 
@@ -68,7 +79,10 @@ angular.module('moduleApp129', [])
 	        $('#connectedusers').css('background-color', 'red');	     
 	        Users.getUsers().
                 then(function (dataResponse) { $scope.users = dataResponse.data; }).
-                then(function () { $('#connectedusers').css('background-color', 'green');});
+                then(function () {
+                    $('#connectedusers').css('background-color', 'green');                
+                    $("#firstli").text("Number of Connected users: " + $scope.users.length)
+                });
 	    }, 3000, 0, true);
    	    $scope.sendGlobalMessage = function () {
    	        // Call the Send method on the hub.
